@@ -1,1 +1,3 @@
-# head-md-oracle-of-suits
+# oracle of suits
+
+This is the Oracle of Suits project!
