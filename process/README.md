@@ -1,4 +1,4 @@
 # Process
 
-This folder the Process
+This folder of the Process.
 
