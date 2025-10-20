@@ -8,7 +8,7 @@ function setup() {
 function draw() {
 
   background(255, 192, 203);
-  for (let i = 0; i < 150; i++) {
+  for (let i = 0; i < 200; i++) {
     noFill();
     // stroke(0, 102, 153, 255 - i * 25);
     ellipse(width / 2, height / 2, 10 + i * 10);
@@ -16,7 +16,7 @@ function draw() {
 
 
   translate(mouseX - width / 2, mouseY - height / 2);
-  for (let i = 0; i < 150; i++) {
+  for (let i = 0; i < 200; i++) {
     noFill();
     // stroke(0, 102, 153, 255 - i * 25);
     ellipse(width / 2, height / 2, 10 + i * 10);
