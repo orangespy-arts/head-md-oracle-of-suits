@@ -14,7 +14,7 @@ let rightHoverColor = "Unknown";
 
 function preload() {
   // Adjust path depending on where your image is relative to HTML
-  bgImg = loadImage('../proto1.png');
+  bgImg = loadImage('proto1.png');
 }
 
 function setup() {
