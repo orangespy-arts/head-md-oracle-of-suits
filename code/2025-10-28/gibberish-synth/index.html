@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Gibberish Synth — 4-Channel Hand-Controlled Orchestrator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="../gibberrish/libraries/p5.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <h1>Gibberish Synth — 4 Channels</h1>
+      <p class="hint">允许摄像头权限，举起食指到对应色块触发对应声部。Horizontal (x) controls pitch/pan; Vertical (y) controls brightness/reverb.</p>
+      <div id="canvas-wrap"></div>
+      <div id="status">状态：初始化…</div>
+      <div id="legend">
+        <div class="item"><span class="swatch gold"></span> 金钱（金色） — channel 1</div>
+        <div class="item"><span class="swatch brown"></span> 树叶（棕色） — channel 2</div>
+        <div class="item"><span class="swatch red"></span> 玻璃（红色） — channel 3</div>
+        <div class="item"><span class="swatch gray"></span> 金属（灰色） — channel 4</div>
+      </div>
+    </div>
+
+    <!-- MediaPipe libs loaded from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+
+    <!-- classes (kept small & modular) -->
+    <script src="MediaPipeHands.js"></script>
+    <script src="ColorDetector.js"></script>
+    <script src="gibberish.js"></script>
+    <script src="HandMapper.js"></script>
+
+    <!-- main app (minimal) -->
+    <script src="main.js"></script>
+  </body>
+</html>
