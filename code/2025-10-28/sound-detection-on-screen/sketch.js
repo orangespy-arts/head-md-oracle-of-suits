@@ -19,7 +19,7 @@ const COLOR_TO_CHANNEL = {
   gold: 'coin',    // 金色 -> ChannelCoin
   brown: 'leaf',   // 棕色 -> ChannelLeaf
   red: 'glass',    // 红色 -> ChannelGlass
-  gray: 'metal',   // 灰色 -> ChannelMetal
+  gray: 'metal'    // 灰色 -> ChannelMetal
 };
 
 // base frequencies per channel (used when mapping X -> pitch)
@@ -76,6 +76,11 @@ function windowResized() {
 
 function draw() {
   background(20);
+  // draw background image (proto1.png) if loaded
+  if (typeof bgImg !== 'undefined' && bgImg) {
+    // draw scaled to canvas size so coord mapping in colordetect.js matches canvas
+    image(bgImg, 0, 0, width, height);
+  }
   if (!isVideoReady()) { fill(200); text('等待摄像头…', 20, 30); return; }
 
   // draw video
