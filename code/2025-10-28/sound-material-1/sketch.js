@@ -62,47 +62,66 @@ function draw() {
   // --- Process MediaPipe detections ---
   if (detections && detections.multiHandLandmarks && detections.multiHandLandmarks.length > 0) {
     for (let i = 0; i < detections.multiHandLandmarks.length; i++) {
-      let hand = detections.multiHandLandmarks[i];
-      let handedness = detections.multiHandedness[i].label; // "Left" or "Right"
-      let indexTip = hand[FINGER_TIPS.index];
+      try {
+        let hand = detections.multiHandLandmarks[i];
+        let handedness = (detections.multiHandedness && detections.multiHandedness[i] && detections.multiHandedness[i].label) ? detections.multiHandedness[i].label : 'Unknown';
+        // ensure FINGER_TIPS exists and index landmark present
+        const tipIdx = (typeof FINGER_TIPS !== 'undefined' && FINGER_TIPS.index !== undefined) ? FINGER_TIPS.index : 8;
+        let indexTip = hand && hand[tipIdx];
+        if (!indexTip) continue;
 
-      let fingerPos = {
-        x: indexTip.x * width,
-        y: indexTip.y * height
-      };
+        let fingerPos = {
+          x: indexTip.x * width,
+          y: indexTip.y * height
+        };
 
-      // Store position
-      if (handedness === 'Left') {
-        leftHandDetected = true;
-        leftIndexPos = fingerPos;
-      } else if (handedness === 'Right') {
-        rightHandDetected = true;
-        rightIndexPos = fingerPos;
+        // Store position
+        if (handedness === 'Left') {
+          leftHandDetected = true;
+          leftIndexPos = fingerPos;
+        } else if (handedness === 'Right') {
+          rightHandDetected = true;
+          rightIndexPos = fingerPos;
+        }
+
+        // Draw index tip & connections where possible
+        try { drawIndex(hand); } catch(e) { /* ignore draw errors */ }
+        try { drawConnections(hand); } catch(e) { /* ignore draw errors */ }
+      } catch (e) {
+        console.warn('[sketch] error processing hand', e);
       }
-
-      // Draw index tip
-      drawIndex(hand);
-      drawConnections(hand);
     }
   }
 
   // --- Color detection for fingers ---
   if (leftIndexPos) {
-    let imgPt = canvasToImageCoords(leftIndexPos.x, leftIndexPos.y, bgImg, width, height);
-    let avgRgb = sampleAvgColor(bgImg, imgPt.x, imgPt.y, 5);
-    leftHoverColor = detectColor(rgbToHsv(...avgRgb));
-    // trigger engine for left hand
-    updateEngineForHand('left', leftHoverColor, leftIndexPos);
+    try {
+      if (!bgImg) { leftHoverColor = 'Unknown'; }
+      else {
+        let imgPt = canvasToImageCoords(leftIndexPos.x, leftIndexPos.y, bgImg, width, height);
+        let avgRgb = sampleAvgColor(bgImg, imgPt.x, imgPt.y, 5);
+        leftHoverColor = detectColor(rgbToHsv(...avgRgb));
+        console.debug('[sketch] left sample', avgRgb, '->', leftHoverColor);
+        // trigger engine for left hand
+        updateEngineForHand('left', leftHoverColor, leftIndexPos);
+      }
+    } catch (e) { console.warn('[sketch] left sampling error', e); leftHoverColor = 'Unknown'; }
   } else {
     leftHoverColor = "Unknown";
   }
 
   if (rightIndexPos) {
-    let imgPt = canvasToImageCoords(rightIndexPos.x, rightIndexPos.y, bgImg, width, height);
-    let avgRgb = sampleAvgColor(bgImg, imgPt.x, imgPt.y, 5);
-    rightHoverColor = detectColor(rgbToHsv(...avgRgb));
-    // trigger engine for right hand
-    updateEngineForHand('right', rightHoverColor, rightIndexPos);
+    try {
+      if (!bgImg) { rightHoverColor = 'Unknown'; }
+      else {
+        let imgPt = canvasToImageCoords(rightIndexPos.x, rightIndexPos.y, bgImg, width, height);
+        let avgRgb = sampleAvgColor(bgImg, imgPt.x, imgPt.y, 5);
+        rightHoverColor = detectColor(rgbToHsv(...avgRgb));
+        console.debug('[sketch] right sample', avgRgb, '->', rightHoverColor);
+        // trigger engine for right hand
+        updateEngineForHand('right', rightHoverColor, rightIndexPos);
+      }
+    } catch (e) { console.warn('[sketch] right sampling error', e); rightHoverColor = 'Unknown'; }
   } else {
     rightHoverColor = "Unknown";
   }
