@@ -289,8 +289,6 @@ class GibberishEngine {
     delete this.active[name];
   }
 
-  // sweep: 清理长时间未更新的激活通道
-  // timeout: 超时时间（毫秒），超过则关闭
   sweep(timeout=900){
     const now=Date.now();
     for(const n in this.active) if(now-this.active[n]>timeout) this.triggerOff(n);
