@@ -20,7 +20,6 @@ const COLOR_TO_CHANNEL = {
   brown: 'leaf',   // 棕色 -> ChannelLeaf
   red: 'glass',    // 红色 -> ChannelGlass
   gray: 'metal',   // 灰色 -> ChannelMetal
-  grey: 'metal'
 };
 
 // base frequencies per channel (used when mapping X -> pitch)
